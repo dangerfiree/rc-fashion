@@ -1,0 +1,6 @@
+{
+  "name": "RC Fashion Concept",
+  "description": "Catálogo online moderno e elegante de conjuntos femininos premium.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
