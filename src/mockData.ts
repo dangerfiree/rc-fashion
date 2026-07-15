@@ -24,9 +24,11 @@ export const MOCK_PRODUCTS: Product[] = [
         'https://i.imgur.com/oOQqgCi.png'
       ]
     },
+    category: 'Conjuntos',
+    image_url: 'https://i.imgur.com/PQjUNLT.png',
     sizes: ['P', 'M', 'G', 'GG'],
     colors: ['Cinza', 'Azul', 'Branco'],
-    stock: 100,
+    in_stock: true,
     created_at: new Date().toISOString(),
   }
 ];

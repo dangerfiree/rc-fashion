@@ -3,29 +3,18 @@ export interface Product {
   name: string;
   description: string;
   price: number;
-  images: string[];
+  image_url: string;
+  images?: string[];
   colorImages?: Record<string, string[]>;
+  category: string;
   sizes: string[];
   colors: string[];
-  stock: number;
-  created_at: string;
+  in_stock: boolean;
+  created_at?: string;
 }
 
-export interface CartItem extends Product {
-  selectedSize: string;
-  selectedColor: string;
-  quantity: number;
-}
-
-export interface Order {
+export interface UserProfile {
   id: string;
-  customer_name: string;
-  customer_phone: string;
-  customer_email: string;
-  address: string;
-  observations?: string;
-  items: CartItem[];
-  subtotal: number;
-  status: 'pending' | 'preparing' | 'shipped' | 'delivered' | 'cancelled';
-  created_at: string;
+  email: string;
+  role: 'admin' | 'user';
 }

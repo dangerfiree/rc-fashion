@@ -75,7 +75,9 @@ export const ProductDetail: React.FC = () => {
     window.open(`https://wa.me/5511967959847?text=${encodedMessage}`, '_blank');
   };
 
-  const currentImages = product.colorImages && selectedColor ? product.colorImages[selectedColor] : product.images;
+  const currentImages = product.colorImages && selectedColor && product.colorImages[selectedColor] 
+    ? product.colorImages[selectedColor] 
+    : (product.images && product.images.length > 0 ? product.images : [product.image_url]);
 
   return (
     <div className="pt-24 pb-20">
