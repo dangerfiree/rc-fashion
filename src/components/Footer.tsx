@@ -4,98 +4,60 @@ import { Link } from 'react-router-dom';
 
 export const Footer: React.FC = () => {
   return (
-    <footer id="contato" className="bg-black text-white pt-20 pb-10">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+    <footer id="contato" className="bg-white text-black pt-24 pb-12 border-t border-gray-100">
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-20">
           {/* Brand */}
-          <div className="space-y-6">
-            <Link to="/" className="flex flex-col items-start group">
-              <span className="text-2xl font-serif tracking-[0.2em] font-bold text-white group-hover:text-gold transition-colors uppercase">
+          <div className="col-span-1 md:col-span-1">
+            <Link to="/" className="flex flex-col items-start group mb-6">
+              <span className="text-xl font-serif tracking-[0.2em] font-bold text-black uppercase">
                 RC
               </span>
-              <span className="text-[10px] tracking-[0.4em] text-gray-400 uppercase font-light -mt-1 group-hover:text-gold transition-colors">
+              <span className="text-[8px] tracking-[0.3em] text-gray-400 uppercase font-light -mt-1">
                 Fashion Concept
               </span>
             </Link>
-            <p className="text-gray-400 font-light text-sm leading-relaxed max-w-xs">
-              Elegância que veste você. Conjuntos femininos premium com design exclusivo e qualidade superior.
+            <p className="text-gray-400 font-light text-xs leading-relaxed uppercase tracking-widest">
+              Sofisticação e elegância em cada detalhe.
             </p>
-            <div className="flex space-x-4">
-              <a href="https://www.instagram.com/rc.fashionconcept/" target="_blank" rel="noopener noreferrer" className="p-2 bg-white/10 rounded-full hover:bg-gold transition-colors">
-                <Instagram size={18} />
-              </a>
-              <a href="https://wa.me/5511967959847?text=Olá! Tenho interesse nas peças da RC Fashion Concept. Gostaria de mais informações." target="_blank" rel="noopener noreferrer" className="p-2 bg-white/10 rounded-full hover:bg-gold transition-colors">
-                <Phone size={18} />
-              </a>
-            </div>
           </div>
 
-          {/* Links */}
+          {/* Navigation */}
           <div>
-            <h4 className="text-sm font-semibold tracking-widest uppercase mb-8 border-b border-white/10 pb-2 inline-block">
-              Navegação
-            </h4>
-            <ul className="space-y-4 text-sm font-light text-gray-400">
+            <h4 className="text-[10px] font-bold tracking-[0.3em] uppercase mb-6 text-black">Explorar</h4>
+            <ul className="space-y-4 text-[10px] font-bold text-gray-400 uppercase tracking-widest">
               <li><Link to="/" className="hover:text-gold transition-colors">Início</Link></li>
               <li><a href="#catalogo" className="hover:text-gold transition-colors">Catálogo</a></li>
-              <li><a href="#sobre" className="hover:text-gold transition-colors">Sobre</a></li>
-              <li><Link to="/admin/login" className="hover:text-gold transition-colors">Administração</Link></li>
+              <li><Link to="/admin/login" className="hover:text-gold transition-colors">Admin</Link></li>
+            </ul>
+          </div>
+
+          {/* Social */}
+          <div>
+            <h4 className="text-[10px] font-bold tracking-[0.3em] uppercase mb-6 text-black">Social</h4>
+            <ul className="space-y-4 text-[10px] font-bold text-gray-400 uppercase tracking-widest">
+              <li><a href="https://www.instagram.com/rc.fashionconcept/" target="_blank" rel="noreferrer" className="hover:text-gold transition-colors">Instagram</a></li>
+              <li><a href="https://wa.me/5511967959847" target="_blank" rel="noreferrer" className="hover:text-gold transition-colors">WhatsApp</a></li>
             </ul>
           </div>
 
           {/* Contact */}
           <div>
-            <h4 className="text-sm font-semibold tracking-widest uppercase mb-8 border-b border-white/10 pb-2 inline-block">
-              Contato
-            </h4>
-            <ul className="space-y-4 text-sm font-light text-gray-400">
-              <li className="flex items-center space-x-3">
-                <Phone size={16} className="text-gold" />
-                <a 
-                  href="https://wa.me/5511967959847?text=Olá! Tenho interesse nas peças da RC Fashion Concept. Gostaria de mais informações." 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
-                  className="hover:text-gold transition-colors"
-                >
-                  +55 11 96795-9847
-                </a>
-              </li>
-              <li className="flex items-center space-x-3">
-                <Mail size={16} className="text-gold" />
-                <span>contato@rcfashion.com.br</span>
-              </li>
-              <li className="flex items-center space-x-3">
-                <MapPin size={16} className="text-gold" />
-                <span>São Paulo, SP - Brasil</span>
-              </li>
-            </ul>
-          </div>
-
-          {/* Instagram CTA */}
-          <div>
-            <h4 className="text-sm font-semibold tracking-widest uppercase mb-8 border-b border-white/10 pb-2 inline-block">
-              Social
-            </h4>
-            <p className="text-sm text-gray-400 mb-6 font-light">
-              Siga nosso Instagram para novidades e tendências diárias.
+            <h4 className="text-[10px] font-bold tracking-[0.3em] uppercase mb-6 text-black">Contato</h4>
+            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest leading-relaxed">
+              São Paulo, SP<br />
+              Brasil
             </p>
-            <a
-              href="https://www.instagram.com/rc.fashionconcept/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center space-x-2 px-6 py-3 bg-gold text-white text-xs font-bold tracking-widest uppercase hover:bg-gold-dark transition-colors"
-            >
-              <Instagram size={16} />
-              <span>Seguir no Instagram</span>
-            </a>
           </div>
         </div>
 
-        <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center text-[10px] text-gray-500 uppercase tracking-widest">
-          <p>© {new Date().getFullYear()} RC Fashion Concept. Todos os direitos reservados.</p>
-          <div className="mt-4 md:mt-0 flex space-x-6">
-            <a href="#" className="hover:text-white">Privacidade</a>
-            <a href="#" className="hover:text-white">Termos</a>
+        <div className="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-gray-100 gap-4">
+          <p className="text-[8px] text-gray-300 uppercase tracking-[0.3em]">
+            © {new Date().getFullYear()} RC Fashion Concept.
+          </p>
+          <div className="flex space-x-6 text-[8px] text-gray-300 uppercase tracking-[0.3em]">
+            <a href="#" className="hover:text-black">Privacidade</a>
+            <a href="#" className="hover:text-black">Termos</a>
           </div>
         </div>
       </div>

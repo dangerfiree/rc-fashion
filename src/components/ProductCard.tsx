@@ -23,6 +23,13 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           alt={product.name}
           className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
         />
+        {product.is_new_arrival && product.in_stock && (
+          <div className="absolute top-2 left-2 z-10">
+            <span className="bg-gold text-white text-[8px] font-bold tracking-[0.2em] uppercase py-1 px-2 shadow-lg">
+              New
+            </span>
+          </div>
+        )}
         {!product.in_stock && (
           <div className="absolute inset-0 bg-white/60 backdrop-blur-[2px] flex items-center justify-center">
             <span className="text-[10px] font-bold tracking-[0.2em] uppercase text-black border-y border-black py-1 px-4">

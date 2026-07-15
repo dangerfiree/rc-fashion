@@ -21,22 +21,22 @@ const benefits = [
 
 export const BenefitIcons: React.FC = () => {
   return (
-    <section className="py-24 bg-white border-t border-gray-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-16">
+    <section className="py-16 md:py-24 bg-white">
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-16">
           {benefits.map((benefit, index) => (
             <div 
               key={index} 
-              className="flex flex-col items-center text-center space-y-6 group cursor-default"
+              className="flex flex-col items-start space-y-4 group cursor-default"
             >
-              <div className="p-6 bg-gray-50 rounded-full transition-all duration-500 group-hover:bg-gold/10 group-hover:scale-110">
+              <div className="text-gold transition-transform duration-500 group-hover:scale-110">
                 {benefit.icon}
               </div>
-              <div className="space-y-3">
-                <h4 className="text-sm font-bold tracking-[0.2em] uppercase text-black">
+              <div className="space-y-2">
+                <h4 className="text-[10px] font-bold tracking-[0.3em] uppercase text-black">
                   {benefit.title}
                 </h4>
-                <p className="text-gray-400 text-sm font-light leading-relaxed max-w-[250px] mx-auto">
+                <p className="text-gray-400 text-xs font-light leading-relaxed max-w-[200px]">
                   {benefit.description}
                 </p>
               </div>

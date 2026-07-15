@@ -36,10 +36,12 @@ export const Home: React.FC = () => {
   }, []);
 
   useEffect(() => {
+    const activeProducts = allProducts.filter(p => p.is_active !== false);
+    
     if (selectedCategory === 'Todos') {
-      setFilteredProducts(allProducts);
+      setFilteredProducts(activeProducts);
     } else {
-      setFilteredProducts(allProducts.filter(p => p.category === selectedCategory));
+      setFilteredProducts(activeProducts.filter(p => p.category === selectedCategory));
     }
   }, [selectedCategory, allProducts]);
 
@@ -74,7 +76,7 @@ export const Home: React.FC = () => {
             </div>
 
             <div className="flex overflow-x-auto no-scrollbar -mx-6 px-6 gap-4 md:grid md:grid-cols-4 md:gap-8">
-              {allProducts.filter(p => p.is_new_arrival).map((product) => (
+              {allProducts.filter(p => p.is_new_arrival && p.is_active !== false).map((product) => (
                 <div key={product.id} className="min-w-[280px] md:min-w-0">
                   <ProductCard product={product} />
                 </div>

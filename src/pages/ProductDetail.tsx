@@ -59,11 +59,17 @@ export const ProductDetail: React.FC = () => {
     );
   }
 
-  if (!product) {
+  if (!product || product.is_active === false) {
     return (
-      <div className="pt-40 pb-20 text-center">
-        <h2 className="text-2xl font-serif">Produto não encontrado.</h2>
-        <button onClick={() => navigate('/')} className="mt-4 text-gold hover:underline">Voltar ao início</button>
+      <div className="pt-40 pb-20 text-center px-6">
+        <h2 className="text-2xl font-serif mb-4 uppercase tracking-tight">Produto Indisponível</h2>
+        <p className="text-gray-400 font-light mb-8 uppercase tracking-widest text-[10px]">Este produto foi pausado ou não está mais disponível no catálogo.</p>
+        <button 
+          onClick={() => navigate('/')}
+          className="px-8 py-3 bg-black text-white text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-gold transition-colors"
+        >
+          Voltar para a Loja
+        </button>
       </div>
     );
   }

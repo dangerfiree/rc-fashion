@@ -10,6 +10,7 @@ export interface Product {
   sizes: string[];
   colors: string[];
   in_stock: boolean;
+  is_active?: boolean;
   is_new_arrival?: boolean;
   created_at?: string;
 }
