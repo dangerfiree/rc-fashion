@@ -8,7 +8,11 @@ import { supabase } from '../lib/supabase';
 import { motion } from 'motion/react';
 
 export const Home: React.FC = () => {
-  const [products, setProducts] = useState<Product[]>(MOCK_PRODUCTS);
+  const [allProducts, setAllProducts] = useState<Product[]>(MOCK_PRODUCTS);
+  const [filteredProducts, setFilteredProducts] = useState<Product[]>(MOCK_PRODUCTS);
+  const [selectedCategory, setSelectedCategory] = useState('Todos');
+
+  const categories = ['Todos', 'Conjuntos', 'Vestidos', 'Blusas', 'Calças', 'Saias', 'Acessórios'];
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -20,7 +24,8 @@ export const Home: React.FC = () => {
         
         if (error) throw error;
         if (data && data.length > 0) {
-          setProducts(data);
+          setAllProducts(data);
+          setFilteredProducts(data);
         }
       } catch (error) {
         console.warn('Could not fetch products from Supabase, using mock data.', error);
@@ -30,96 +35,114 @@ export const Home: React.FC = () => {
     fetchProducts();
   }, []);
 
+  useEffect(() => {
+    if (selectedCategory === 'Todos') {
+      setFilteredProducts(allProducts);
+    } else {
+      setFilteredProducts(allProducts.filter(p => p.category === selectedCategory));
+    }
+  }, [selectedCategory, allProducts]);
+
   return (
-    <div className="pt-20">
+    <div className="pt-16 bg-white">
       <Hero />
       
+      {/* New Arrivals (Lançamentos) Section */}
+      {allProducts.some(p => p.is_new_arrival) && (
+        <section className="py-20 md:py-32 bg-gray-50/50">
+          <div className="max-w-7xl mx-auto px-6">
+            <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
+              <div>
+                <motion.span 
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  className="text-gold font-bold tracking-[0.3em] uppercase text-[10px] mb-2 block"
+                >
+                  Exclusividade
+                </motion.span>
+                <motion.h2 
+                  initial={{ opacity: 0, y: 10 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  className="text-3xl md:text-5xl font-serif text-black uppercase tracking-tight"
+                >
+                  Lançamentos
+                </motion.h2>
+              </div>
+              <p className="text-gray-400 font-light text-xs md:text-sm max-w-xs md:text-right uppercase tracking-widest">
+                Descubra as peças que acabaram de chegar em nossa coleção.
+              </p>
+            </div>
+
+            <div className="flex overflow-x-auto no-scrollbar -mx-6 px-6 gap-4 md:grid md:grid-cols-4 md:gap-8">
+              {allProducts.filter(p => p.is_new_arrival).map((product) => (
+                <div key={product.id} className="min-w-[280px] md:min-w-0">
+                  <ProductCard product={product} />
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* Catalog Section */}
-      <section id="catalogo" className="py-24 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
+      <section id="catalogo" className="py-20 md:py-32">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="flex flex-col md:flex-row md:items-center justify-between mb-12 gap-6">
             <motion.h2 
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="text-4xl sm:text-5xl font-serif text-black mb-4"
+              className="text-2xl md:text-4xl font-serif text-black uppercase tracking-tight"
             >
-              Nossa Coleção
+              Catálogo <span className="text-gold">.</span>
             </motion.h2>
-            <motion.div 
-              initial={{ opacity: 0, scaleX: 0 }}
-              whileInView={{ opacity: 1, scaleX: 1 }}
-              viewport={{ once: true }}
-              className="w-24 h-[1px] bg-gold mx-auto mb-6"
-            ></motion.div>
-            <motion.p 
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              className="text-gray-500 font-light max-w-xl mx-auto uppercase tracking-widest text-xs"
-            >
-              Peças selecionadas com rigor para garantir o melhor 
-              em sofisticação e estilo para você.
-            </motion.p>
+
+            {/* Category Filters */}
+            <div className="flex overflow-x-auto no-scrollbar -mx-6 px-6 gap-2">
+              {categories.map((cat) => (
+                <button
+                  key={cat}
+                  onClick={() => setSelectedCategory(cat)}
+                  className={`whitespace-nowrap px-5 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest transition-all duration-500 border ${
+                    selectedCategory === cat
+                      ? 'bg-black text-white border-black shadow-xl shadow-black/10'
+                      : 'bg-white text-gray-400 border-gray-100 hover:border-gold hover:text-gold'
+                  }`}
+                >
+                  {cat}
+                </button>
+              ))}
+            </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16">
-            {products.map((product) => (
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-4 gap-y-10 md:gap-x-10 md:gap-y-20">
+            {filteredProducts.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
           </div>
+          
+          {filteredProducts.length === 0 && (
+            <div className="text-center py-32 bg-gray-50/30 rounded-2xl border border-dashed border-gray-100">
+              <p className="text-gray-400 font-light text-xs uppercase tracking-widest">Nenhum produto disponível nesta categoria no momento.</p>
+            </div>
+          )}
         </div>
       </section>
 
-      {/* About Section */}
-      <section id="sobre" className="py-24 bg-black text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-              className="relative aspect-[3/4] sm:aspect-square overflow-hidden rounded-2xl shadow-2xl"
-            >
-              <img 
-                src="https://i.imgur.com/xlh9uXn.png" 
-                alt="Sobre RC Fashion Concept" 
-                className="w-full h-full object-cover object-top"
-              />
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, x: 50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-              className="space-y-8"
-            >
-              <span className="text-gold tracking-[0.3em] uppercase text-sm font-medium">Sobre a Marca</span>
-              <h2 className="text-4xl sm:text-6xl font-serif leading-tight text-white">
-                RC Fashion Concept
-              </h2>
-              <div className="space-y-6 text-gray-400 font-light leading-relaxed text-lg">
-                <p>
-                  Na RC Fashion Concept, acreditamos que a elegância está nos detalhes. Nossa missão é oferecer peças que unem sofisticação, conforto e qualidade premium para mulheres que desejam se vestir com estilo em qualquer ocasião.
-                </p>
-                <p>
-                  Cada coleção é escolhida com cuidado para proporcionar caimento impecável, tecidos de alta qualidade e um visual moderno, valorizando a beleza e a confiança de cada cliente.
-                </p>
-              </div>
-              <div className="pt-4">
-                <a 
-                  href="https://wa.me/5511967959847?text=Olá! Gostaria de saber mais sobre a marca RC Fashion Concept."
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-block px-8 py-4 border border-gold text-gold hover:bg-gold hover:text-white transition-all uppercase tracking-widest text-xs font-bold"
-                >
-                  Falar Conosco
-                </a>
-              </div>
-            </motion.div>
-          </div>
-        </div>
+      {/* Visual Quote Section */}
+      <section className="py-32 bg-black text-center px-6">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1 }}
+        >
+          <span className="text-gold/50 font-serif text-6xl block mb-4">"</span>
+          <p className="text-white font-serif text-xl md:text-3xl max-w-2xl mx-auto leading-relaxed italic opacity-90">
+            A moda passa, o estilo permanece.
+          </p>
+          <span className="text-gold font-bold tracking-[0.4em] uppercase text-[10px] mt-8 block">
+            RC Fashion Concept
+          </span>
+        </motion.div>
       </section>
 
       <BenefitIcons />

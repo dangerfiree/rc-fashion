@@ -33,6 +33,7 @@ export const AdminDashboard: React.FC = () => {
   const [sizes, setSizes] = useState('');
   const [colors, setColors] = useState('');
   const [inStock, setInStock] = useState(true);
+  const [isNewArrival, setIsNewArrival] = useState(false);
 
   useEffect(() => {
     checkAuth();
@@ -76,6 +77,7 @@ export const AdminDashboard: React.FC = () => {
     setSizes('');
     setColors('');
     setInStock(true);
+    setIsNewArrival(false);
     setEditingProduct(null);
   };
 
@@ -89,6 +91,7 @@ export const AdminDashboard: React.FC = () => {
     setSizes(product.sizes.join(', '));
     setColors(product.colors.join(', '));
     setInStock(product.in_stock);
+    setIsNewArrival(product.is_new_arrival || false);
     setIsModalOpen(true);
   };
 
@@ -105,6 +108,7 @@ export const AdminDashboard: React.FC = () => {
       sizes: sizes.split(',').map(s => s.trim()).filter(s => s),
       colors: colors.split(',').map(c => c.trim()).filter(c => c),
       in_stock: inStock,
+      is_new_arrival: isNewArrival,
     };
 
     try {
@@ -360,6 +364,7 @@ export const AdminDashboard: React.FC = () => {
                       <option value="Vestidos">Vestidos</option>
                       <option value="Blusas">Blusas</option>
                       <option value="Calças">Calças</option>
+                      <option value="Saias">Saias</option>
                       <option value="Acessórios">Acessórios</option>
                     </select>
                   </div>
@@ -374,6 +379,19 @@ export const AdminDashboard: React.FC = () => {
                         <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${inStock ? 'translate-x-6' : 'translate-x-1'}`} />
                       </button>
                       <span className="text-sm text-gray-600 font-medium">{inStock ? 'Em estoque' : 'Esgotado'}</span>
+                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest">Lançamento</label>
+                    <div className="flex items-center gap-4 py-3">
+                      <button
+                        type="button"
+                        onClick={() => setIsNewArrival(!isNewArrival)}
+                        className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none ${isNewArrival ? 'bg-gold' : 'bg-gray-200'}`}
+                      >
+                        <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${isNewArrival ? 'translate-x-6' : 'translate-x-1'}`} />
+                      </button>
+                      <span className="text-sm text-gray-600 font-medium">{isNewArrival ? 'Sim' : 'Não'}</span>
                     </div>
                   </div>
                 </div>

@@ -80,26 +80,26 @@ export const ProductDetail: React.FC = () => {
     : (product.images && product.images.length > 0 ? product.images : [product.image_url]);
 
   return (
-    <div className="pt-24 pb-20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Breadcrumb */}
-        <nav className="flex items-center space-x-2 text-[10px] uppercase tracking-widest text-gray-400 mb-10">
+    <div className="pt-16 pb-20">
+      <div className="max-w-7xl mx-auto px-4 md:px-8">
+        {/* Breadcrumb - Subtle and clean */}
+        <nav className="flex items-center space-x-2 text-[8px] md:text-[10px] uppercase tracking-[0.2em] text-gray-400 mb-6 py-4">
           <button onClick={() => navigate('/')} className="hover:text-black transition-colors">Início</button>
-          <ChevronRight size={12} />
-          <span className="text-black">{product.name}</span>
+          <span className="text-gray-300">/</span>
+          <span className="text-black font-bold">{product.name}</span>
         </nav>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
-          {/* Image Gallery */}
-          <div className="space-y-4">
-            <div className="relative aspect-[3/4] overflow-hidden bg-gray-50 border border-gray-100">
+        <div className="flex flex-col lg:grid lg:grid-cols-2 gap-8 md:gap-16">
+          {/* Image Gallery - Mobile First focus */}
+          <div className="space-y-3">
+            <div className="relative aspect-[3/4] overflow-hidden bg-gray-50 rounded-sm">
               <AnimatePresence mode="wait">
                 <motion.img
                   key={`${selectedColor}-${currentImageIndex}`}
-                  initial={{ opacity: 0, scale: 1.05 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 1.05 }}
-                  transition={{ duration: 0.4 }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.3 }}
                   src={currentImages[currentImageIndex]}
                   alt={product.name}
                   className="w-full h-full object-cover"
@@ -107,29 +107,27 @@ export const ProductDetail: React.FC = () => {
               </AnimatePresence>
               
               {currentImages.length > 1 && (
-                <>
-                  <button 
-                    onClick={() => setCurrentImageIndex((prev) => (prev === 0 ? currentImages.length - 1 : prev - 1))}
-                    className="absolute left-4 top-1/2 -translate-y-1/2 p-2 bg-white/80 rounded-full hover:bg-white transition-colors z-10"
-                  >
-                    <ChevronLeft size={20} />
-                  </button>
-                  <button 
-                    onClick={() => setCurrentImageIndex((prev) => (prev === currentImages.length - 1 ? 0 : prev + 1))}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 p-2 bg-white/80 rounded-full hover:bg-white transition-colors z-10"
-                  >
-                    <ChevronRight size={20} />
-                  </button>
-                </>
+                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-1.5">
+                  {currentImages.map((_, idx) => (
+                    <div 
+                      key={idx}
+                      className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${
+                        currentImageIndex === idx ? 'bg-white w-4' : 'bg-white/40'
+                      }`}
+                    />
+                  ))}
+                </div>
               )}
             </div>
-            <div className="grid grid-cols-3 gap-4">
+            
+            {/* Thumbnail selector - Scrollable on mobile */}
+            <div className="flex overflow-x-auto no-scrollbar gap-2 pb-2">
               {currentImages.map((img, idx) => (
                 <button
                   key={`${selectedColor}-${idx}`}
                   onClick={() => setCurrentImageIndex(idx)}
-                  className={`aspect-[3/4] overflow-hidden border-2 transition-all ${
-                    currentImageIndex === idx ? 'border-gold opacity-100' : 'border-transparent opacity-50 hover:opacity-80'
+                  className={`flex-shrink-0 w-20 aspect-[3/4] overflow-hidden border transition-all ${
+                    currentImageIndex === idx ? 'border-black' : 'border-transparent opacity-60'
                   }`}
                 >
                   <img src={img} alt={`${product.name} ${idx + 1}`} className="w-full h-full object-cover" />
@@ -139,29 +137,26 @@ export const ProductDetail: React.FC = () => {
           </div>
 
           {/* Product Info */}
-          <div className="space-y-10">
-            <div className="space-y-4">
-              <h1 className="text-4xl sm:text-5xl font-serif text-black">{product.name}</h1>
-              <p className="text-2xl text-gold font-light">{formatPrice(product.price)}</p>
+          <div className="space-y-8 md:space-y-10 pt-4 md:pt-0">
+            <div className="space-y-2">
+              <span className="text-[10px] text-gold font-bold uppercase tracking-[0.3em]">{product.category}</span>
+              <h1 className="text-3xl md:text-5xl font-serif text-black leading-tight">{product.name}</h1>
+              <p className="text-xl md:text-2xl text-black font-light">{formatPrice(product.price)}</p>
             </div>
 
-            <p className="text-gray-500 font-light leading-relaxed text-lg whitespace-pre-line">
-              {product.description}
-            </p>
-
-            <div className="space-y-8">
+            <div className="space-y-6">
               {/* Size Selection */}
-              <div className="space-y-4">
-                <span className="block text-xs font-bold uppercase tracking-widest text-black">Tamanho</span>
-                <div className="flex flex-wrap gap-3">
+              <div className="space-y-3">
+                <span className="block text-[10px] font-bold uppercase tracking-widest text-gray-400">Selecione o Tamanho</span>
+                <div className="flex flex-wrap gap-2">
                   {product.sizes.map((size) => (
                     <button
                       key={size}
                       onClick={() => setSelectedSize(size)}
-                      className={`w-12 h-12 flex items-center justify-center text-sm font-medium border transition-all ${
+                      className={`min-w-[48px] h-12 flex items-center justify-center text-xs font-bold border transition-all ${
                         selectedSize === size 
                           ? 'border-black bg-black text-white' 
-                          : 'border-gray-200 hover:border-black text-gray-400'
+                          : 'border-gray-100 hover:border-black text-gray-400'
                       }`}
                     >
                       {size}
@@ -171,9 +166,12 @@ export const ProductDetail: React.FC = () => {
               </div>
 
               {/* Color Selection */}
-              <div className="space-y-4">
-                <span className="block text-xs font-bold uppercase tracking-widest text-black">Cor: {selectedColor}</span>
-                <div className="flex flex-wrap gap-3">
+              <div className="space-y-3">
+                <div className="flex justify-between items-center">
+                  <span className="block text-[10px] font-bold uppercase tracking-widest text-gray-400">Cor</span>
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-black">{selectedColor}</span>
+                </div>
+                <div className="flex flex-wrap gap-2">
                   {product.colors.map((color) => (
                     <button
                       key={color}
@@ -181,10 +179,10 @@ export const ProductDetail: React.FC = () => {
                         setSelectedColor(color);
                         setCurrentImageIndex(0);
                       }}
-                      className={`px-4 py-2 text-xs font-medium tracking-widest border transition-all uppercase ${
+                      className={`px-6 py-3 text-[10px] font-bold tracking-widest border transition-all uppercase ${
                         selectedColor === color 
-                          ? 'border-black bg-black text-white' 
-                          : 'border-gray-200 hover:border-black text-gray-400'
+                          ? 'border-black bg-black text-white shadow-lg' 
+                          : 'border-gray-100 hover:border-black text-gray-400'
                       }`}
                     >
                       {color}
@@ -194,23 +192,31 @@ export const ProductDetail: React.FC = () => {
               </div>
             </div>
 
-            <button
-              onClick={handleWhatsApp}
-              className="w-full py-5 bg-black text-white font-bold tracking-[0.2em] uppercase text-sm hover:bg-gold transition-colors flex items-center justify-center space-x-3 group"
-            >
-              <Phone size={20} className="group-hover:animate-pulse" />
-              <span>Chamar no WhatsApp</span>
-            </button>
-
-            {/* Extra Info */}
-            <div className="pt-10 border-t border-gray-100 grid grid-cols-2 gap-8 text-[10px] font-bold uppercase tracking-widest text-gray-400">
-              <div className="space-y-2">
-                <p className="text-black">Envio Imediato</p>
-                <p>Pronta Entrega</p>
+            <div className="space-y-4 pt-4">
+              <button
+                onClick={handleWhatsApp}
+                className="w-full py-5 bg-black text-white font-bold tracking-[0.2em] uppercase text-xs hover:bg-gold transition-all duration-500 flex items-center justify-center space-x-3 shadow-xl shadow-black/10 active:scale-95"
+              >
+                <Phone size={18} />
+                <span>Comprar pelo WhatsApp</span>
+              </button>
+              
+              <div className="p-4 bg-gray-50/50 border border-gray-100 rounded-sm">
+                <p className="text-[10px] text-gray-500 font-light leading-relaxed">
+                  {product.description}
+                </p>
               </div>
-              <div className="space-y-2">
-                <p className="text-black">Compra 100% Segura</p>
-                <p>Troca Fácil</p>
+            </div>
+
+            {/* Trust Badges */}
+            <div className="grid grid-cols-2 gap-4 text-[8px] font-bold uppercase tracking-widest text-gray-400 pt-4">
+              <div className="flex items-center space-x-2">
+                <div className="w-1 h-1 bg-gold rounded-full"></div>
+                <span>Envio para todo Brasil</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <div className="w-1 h-1 bg-gold rounded-full"></div>
+                <span>Parcelamento no cartão</span>
               </div>
             </div>
           </div>
