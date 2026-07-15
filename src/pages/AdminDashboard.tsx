@@ -71,14 +71,17 @@ export const AdminDashboard: React.FC = () => {
 
       const file = e.target.files[0];
       const fileExt = file.name.split('.').pop();
-      const fileName = `${Math.random().toString(36).substring(2)}.${fileExt}`;
-      const filePath = `products/${fileName}`;
+      const fileName = `${Date.now()}-${Math.random().toString(36).substring(2, 9)}.${fileExt}`;
+      const filePath = fileName;
 
       const { error: uploadError } = await supabase.storage
         .from('products')
         .upload(filePath, file);
 
-      if (uploadError) throw uploadError;
+      if (uploadError) {
+        console.error('Upload Error Details:', uploadError);
+        throw new Error(uploadError.message);
+      }
 
       const { data: { publicUrl } } = supabase.storage
         .from('products')
@@ -87,7 +90,7 @@ export const AdminDashboard: React.FC = () => {
       setImageUrl(publicUrl);
     } catch (error: any) {
       console.error('Error uploading image:', error);
-      alert('Erro ao fazer upload da imagem. Certifique-se de que o bucket "products" existe e é público.');
+      alert(`Erro ao fazer upload da imagem: ${error.message || 'Verifique se o bucket "products" existe no Supabase e se as políticas de acesso RLS permitem o upload.'}`);
     } finally {
       setUploading(false);
     }
